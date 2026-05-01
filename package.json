@@ -1,0 +1,22 @@
+{
+  "name": "couple-commitment-tracker",
+  "version": "1.0.0",
+  "description": "情侣约定记录系统 - 共同记录见面后要做的事情",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=frontend",
+    "preview": "wrangler pages dev frontend/dist",
+    "db:init": "wrangler d1 execute couple-commitment-db --file=functions/schema.sql",
+    "db:create": "wrangler d1 create couple-commitment-db"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
