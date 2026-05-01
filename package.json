@@ -9,10 +9,11 @@
   "scripts": {
     "dev": "npm run dev --workspace=frontend",
     "build": "npm run build --workspace=frontend",
-    "preview": "wrangler pages dev frontend/dist"
+    "preview": "wrangler pages dev frontend/dist",
+    "deploy": "npx wrangler pages deploy frontend/dist"
   },
   "devDependencies": {
-    "wrangler": "^3.0.0"
+    "wrangler": "^3.114.17"
   },
   "engines": {
     "node": ">=18.0.0"

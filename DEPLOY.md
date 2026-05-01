@@ -2,127 +2,103 @@
 
 ## 🚀 5 分钟上线你的情侣约定网站
 
-### 方式一：使用 Deploy Button（推荐）
+### 方式一：使用 Deploy Button（推荐，自动配置资源）
 
-1. 点击 README 顶部的 **[Deploy to Cloudflare Pages](https://dash.cloudflare.com/?to=/:account/pages/new/provider/github)** 按钮
+1. 点击 README 顶部的 **[Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/?url=https://github.com/Hjjjkh/qingldaib)** 按钮
 2. 授权 Cloudflare 访问 GitHub
-3. 选择你的仓库
-4. 按下面的步骤配置即可
+3. **Project name**: 输入项目名称（如 `couple-commitment`）
+4. 等待自动配置资源页面出现
+5. 确认以下配置自动填充：
+   - **KV namespace**: `couple-commitment-tracker`
+   - **D1 database**: `couple-commitment-db`
+   - **R2 bucket**: `couple-photos`
+   - **JWT_SECRET**: 自动生成或自定义
+6. **Build command**: `npm run build`
+7. **Deploy command**: **留空**（不要填写！）
+8. 点击 **Save and Deploy**
 
-### 方式二：手动部署
+部署成功后访问你的域名即可！
 
-#### Step 1: 推送到 GitHub
+---
 
-```bash
-cd /workspace
+### 方式二：手动配置（如 Deploy Button 不可用）
 
-# 初始化 git
-git init
-git add .
-git commit -m "Initial commit: couple commitment tracker"
+#### Step 1: 创建 Pages 项目
 
-# 在 GitHub 创建仓库（https://github.com/new）
-# 然后推送：
-git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
-git branch -M main
-git push -u origin main
-```
+1. 访问：https://dash.cloudflare.com/?to=/:account/pages
+2. **Create application** → **Pages** → **Connect to Git**
+3. 选择仓库 `qingldaib` 或 `couple-commitment`
+4. 配置构建：
+   - **Build command**: `npm run build`
+   - **Build output directory**: `frontend/dist`
+   - **Deploy command**: **留空** ❌
+5. **Save and Deploy**
 
-#### Step 2: 连接 Cloudflare Pages
+#### Step 2: 配置资源绑定
 
-1. 访问：https://dash.cloudflare.com/
-2. **Workers & Pages** → **Create application** → **Pages**
-3. **Connect to Git**
-4. 授权并选择你的仓库
-5. **Begin setup**
+部署成功后：
 
-#### Step 3: 配置构建
-
-| 配置 | 值 |
-|------|-----|
-| Framework preset | `Vite` |
-| Build command | `npm run build` |
-| Build output directory | `frontend/dist` |
-| Root directory | `/` |
-| Node version | `18` |
-
-点击 **Save and Deploy**
-
-#### Step 4: 创建 Cloudflare 资源
-
-打开终端执行：
-
-```bash
-# 登录 Cloudflare
-wrangler login
-
-# 创建 D1 数据库
-wrangler d1 create couple-commitment-db
-# 记录：database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-
-# 创建 KV 命名空间
-wrangler kv:namespace create couple-session
-# 记录：id = "yyyyyyyyyyyyyyyyyyyyyyyy"
-
-# 创建 R2 存储桶
-wrangler r2 bucket create couple-photos
-```
-
-#### Step 5: 配置绑定
-
-在 Pages 项目页面：
-
-1. **Settings** → **Functions** → **Function bindings**
+1. **Settings** → **Bindings** → **Add binding**
 2. 添加 3 个绑定：
 
-```
-1. D1 Database
-   - Variable name: DB
-   - Database: couple-commitment-db
+| Type | Variable name | Resource |
+|------|---------------|----------|
+| D1 database | `DB` | `couple-commitment-db` (新建) |
+| KV namespace | `SESSION_STORE` | `couple-commitment-tracker` (新建) |
+| R2 bucket | `PHOTOS` | `couple-photos` (新建) |
 
-2. KV Namespace
-   - Variable name: SESSION_STORE
-   - KV namespace: couple-session
+3. **Save and Deploy** 重新部署
 
-3. R2 Bucket
-   - Variable name: PHOTOS
-   - Bucket: couple-photos
-```
+#### Step 3: 添加环境变量
 
+1. **Settings** → **Environment variables** → **Add variable**
+2. 添加：
+   - **Variable name**: `JWT_SECRET`
+   - **Value**: 任意随机字符串（如 `my-secret-123456`）
 3. **Save and Deploy**
 
-#### Step 6: 添加环境变量
+#### Step 4: 初始化数据库
 
-1. **Settings** → **Environment variables**
-2. **Add variable**
-
-```
-Variable name: JWT_SECRET
-Value: (运行) openssl rand -hex 32
-```
-
-#### Step 7: 初始化数据库
-
+在本地终端执行：
 ```bash
+# 安装 wrangler
+npm install -g wrangler
+
+# 登录
+wrangler login
+
+# 初始化数据库
 wrangler d1 execute couple-commitment-db --file=functions/schema.sql
 ```
 
-#### Step 8: 访问网站
+输入 `y` 确认。
+
+---
+
+## ✅ 访问网站
 
 找到你的域名（在 Pages 项目首页）：
 ```
-https://couple-commitment-tracker.pages.dev
+https://couple-commitment.pages.dev
 ```
 
 登录密码：`123456`
 
 **⚠️ 首次登录后立即修改密码！**
 
-## 完成！🎉
+---
 
-现在你的网站已经上线了！
+## 🔄 自动部署
 
-后续每次 `git push` 都会自动部署新版本。
+配置完成后，每次 `git push` 都会自动部署新版本，无需任何操作！
+
+```bash
+git add .
+git commit -m "修复登录问题"
+git push origin main
+```
+
+---
 
 ## 常用命令
 
@@ -133,16 +109,14 @@ npm run dev
 # 构建
 npm run build
 
-# 本地预览
+# 本地预览（测试构建产物）
 npm run preview
 
-# 查看部署状态
-wrangler pages project list
-
-# 重新部署
-wrangler pages deploy frontend/dist
+# 手动部署（可选，仅当自动部署失败时）
+npm run deploy
 ```
 
-## 需要帮助？
+## 遇到问题？
 
-查看完整文档：[README.md](./README.md)
+- 📖 [完整 README](./README.md)
+- 💬 [Cloudflare Pages 文档](https://developers.cloudflare.com/pages/)

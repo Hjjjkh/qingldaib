@@ -6,28 +6,16 @@
 
 ## 🚀 5 分钟部署
 
-### 方式一：点击 Deploy Button（推荐）
+### 步骤 1：点击 Deploy Button
 
 1. **点击上方的 Deploy to Cloudflare Pages 按钮**
 2. 授权 Cloudflare 访问 GitHub
-3. 选择仓库 `qingldaib`
+3. **Project name**: 输入其他名称（如 `qingldaib-app`，不能用 `qingldaib` 因为已存在）
 4. 配置构建：
-   - **Framework preset**: `Vite`
    - **Build command**: `npm run build`
    - **Build output directory**: `frontend/dist`
+   - **Deploy command**: **留空**（不要填！）
 5. **Save and Deploy**
-
-然后在 Dashboard 配置绑定（见下方"配置资源"）。
-
-### 方式二：手动创建
-
-1. 访问 https://dash.cloudflare.com/
-2. **Workers & Pages** → **Create application** → **Pages**
-3. **Connect to Git** → 选择仓库
-4. 配置构建（同上）
-5. **Save and Deploy**
-
----
 
 ## ⚙️ 配置资源（重要！）
 

@@ -7,20 +7,19 @@
 # Resources are configured via Dashboard:
 # Settings → Bindings
 #   - D1 Database: DB → couple-commitment-db
-#   - KV Namespace: SESSION_STORE → couple-commitment-tracker
+#   - KV Namespace: SESSION_STORE → couple-commitment-tracker  
 #   - R2 Bucket: PHOTOS → couple-photos
 #
 # Environment Variables:
 # Settings → Environment variables
-#   - JWT_SECRET: configured via Deploy Button
+#   - JWT_SECRET: your-secret-key
 
 name = "couple-commitment"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "./frontend/dist"
 
-# Resources are bound via Dashboard, not wrangler.toml
-# Do not add d1_databases, kv_namespaces, or r2_buckets sections
+# DO NOT add d1_databases, kv_namespaces, or r2_buckets here
+# These are managed via Cloudflare Dashboard Bindings
 
-# Environment variable (can also be set in Dashboard)
 [vars]
-JWT_SECRET = "default-secret-change-me"
+JWT_SECRET = "default-secret-change-in-dashboard"
