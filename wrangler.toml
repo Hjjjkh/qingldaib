@@ -1,25 +1,9 @@
-name = "couple-commitment-tracker"
+# Cloudflare Pages 配置
+# 注意：D1/KV/R2 绑定在 Cloudflare Dashboard 配置，不在这里
+# 环境变量也在 Dashboard 配置
+
 compatibility_date = "2024-01-01"
 
-# Pages 配置
+# Pages 项目配置
 pages_build_output_dir = "./frontend/dist"
-upload_source_maps = true
 
-# D1 Database Binding
-[[d1_databases]]
-binding = "DB"
-database_name = "couple-commitment-db"
-# database_id = "在 Cloudflare Dashboard 配置"
-
-# R2 Bucket Binding  
-[[r2_buckets]]
-binding = "PHOTOS"
-bucket_name = "couple-photos"
-
-# KV Namespace Binding
-[[kv_namespaces]]
-binding = "SESSION_STORE"
-# id = "在 Cloudflare Dashboard 配置"
-
-[vars]
-# JWT_SECRET = "在 Cloudflare Dashboard 配置环境变量"
