@@ -4,81 +4,101 @@
 
 [![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/btn.svg)](https://deploy.workers.cloudflare.com/?url=https://github.com/Hjjjkh/qingldaib)
 
-## 🚀 快速部署
+## 🚀 5 分钟部署
 
-点击上面的 **Deploy to Cloudflare Pages** 按钮，或按照以下步骤手动部署。
+### 方式一：点击 Deploy Button（推荐）
 
-### 自动部署（推荐）
+1. **点击上方的 Deploy to Cloudflare Pages 按钮**
+2. 授权 Cloudflare 访问 GitHub
+3. 选择仓库 `qingldaib`
+4. 配置构建：
+   - **Framework preset**: `Vite`
+   - **Build command**: `npm run build`
+   - **Build output directory**: `frontend/dist`
+5. **Save and Deploy**
 
-1. **点击 Deploy Button**
-2. **授权 Cloudflare 访问 GitHub**
-3. **选择仓库** `Hjjjkh/qingldaib`
-4. **配置构建设置**：
+然后在 Dashboard 配置绑定（见下方"配置资源"）。
 
+### 方式二：手动创建
+
+1. 访问 https://dash.cloudflare.com/
+2. **Workers & Pages** → **Create application** → **Pages**
+3. **Connect to Git** → 选择仓库
+4. 配置构建（同上）
+5. **Save and Deploy**
+
+---
+
+## ⚙️ 配置资源（重要！）
+
+部署后需要配置数据库等资源，**全部可以在 Dashboard 完成，无需命令行**！
+
+### 1. 进入设置
+
+在 Pages 项目页面，点击 **Settings** → **Bindings**
+
+### 2. 添加绑定
+
+点击 **Add binding**，依次添加以下 3 个：
+
+#### 添加 D1 数据库
 ```
-Framework preset:        Vite
-Build command:           npm run build
-Build output directory:  frontend/dist
-Root directory:          /
-Node version:           18
+Binding type: D1 database
+Variable name: DB
+Database: Create new... → 输入 "couple-commitment-db" → Create
 ```
 
-5. **点击 Save and Deploy**
-
-### 创建 Cloudflare 资源
-
-打开终端执行：
-
-```bash
-# 登录 Cloudflare
-wrangler login
-
-# 创建 D1 数据库
-wrangler d1 create couple-commitment-db
-
-# 创建 KV 命名空间
-wrangler kv:namespace create couple-session
-
-# 创建 R2 存储桶
-wrangler r2 bucket create couple-photos
+#### 添加 KV 命名空间
+```
+Binding type: KV namespace
+Variable name: SESSION_STORE
+KV namespace: Create new... → 输入 "couple-session" → Create
 ```
 
-### 配置绑定
+#### 添加 R2 存储桶
+```
+Binding type: R2 bucket
+Variable name: PHOTOS
+Bucket: Create new... → 输入 "couple-photos" → Create
+```
 
-在 Pages 项目页面：
+### 3. 设置环境变量
 
-1. **Settings** → **Functions** → **Function bindings**
-2. **Add binding** 添加 3 个绑定：
-
-| Binding 类型 | Variable name | 选择资源 |
-|-------------|---------------|----------|
-| **D1 Database** | `DB` | `couple-commitment-db` |
-| **KV Namespace** | `SESSION_STORE` | `couple-session` |
-| **R2 Bucket** | `PHOTOS` | `couple-photos` |
-
-### 添加环境变量
-
-**Settings** → **Environment variables**：
+**Settings** → **Environment variables** → **Add variable**
 
 ```
 Variable name: JWT_SECRET
-Value: 运行 openssl rand -hex 32 生成的随机字符串
+Value: 随便输入随机字符串（如：my-secret-key-123456）
 ```
 
-### 初始化数据库
+### 4. 重新部署
+
+配置完成后，点击 **Save and Deploy** 重新部署。
+
+---
+
+## 📊 初始化数据库
+
+打开项目中的 **Terminal**（或本地终端）：
 
 ```bash
 wrangler d1 execute couple-commitment-db --file=functions/schema.sql
 ```
 
-### 完成！🎉
+输入 `y` 确认。
 
-访问你的 Pages 域名：
+> 💡 没有 wrangler？先执行 `npm install -g wrangler` 然后 `wrangler login`
+
+---
+
+## 🎉 完成！
+
+访问你的域名：
 ```
 https://qingldaib.pages.dev
 ```
 
-默认登录密码：`123456`
+登录密码：`123456`
 
 **⚠️ 首次登录后请立即修改密码！**
 
@@ -86,121 +106,44 @@ https://qingldaib.pages.dev
 
 ## 功能
 
-- ✅ 约定清单管理（添加/编辑/删除/筛选）
-- ✅ 打卡功能（标记完成/取消/历史记录）
-- ✅ 照片上传（R2 存储）
-- ✅ 见面记录管理
-- ✅ 进度统计（完成率/分类统计/趋势图表）
-- ✅ 简单密码认证
+- ✅ 约定清单管理
+- ✅ 打卡功能
+- ✅ 照片上传
+- ✅ 见面记录
+- ✅ 进度统计
+- ✅ 密码认证
 
 ## 技术栈
 
-| 层级 | 技术 |
-|------|------|
-| **前端** | Vue 3 + TypeScript + Vite |
-| **UI** | Naive UI |
-| **状态管理** | Pinia |
-| **路由** | Vue Router |
-| **后端** | Cloudflare Pages Functions |
-| **数据库** | Cloudflare D1 (SQLite) |
-| **存储** | Cloudflare R2 |
-| **缓存** | Cloudflare KV |
-| **认证** | JWT + bcryptjs |
+- **前端**: Vue 3 + TypeScript + Vite
+- **UI**: Naive UI
+- **后端**: Cloudflare Pages Functions
+- **数据库**: D1 (SQLite)
+- **存储**: R2
+- **缓存**: KV
 
 ## 自动部署
 
-配置完成后，每次推送代码到 `main` 分支：
+每次推送代码到 `main` 分支会自动部署：
 
 ```bash
 git add .
-git commit -m "feat: 新功能描述"
+git commit -m "更新内容"
 git push origin main
-```
-
-Cloudflare Pages 会自动：
-1. 检测代码变更
-2. 执行 `npm run build`
-3. 部署到全球 CDN
-4. 更新 Functions
-
-## 项目结构
-
-```
-├── functions/              # Cloudflare Pages Functions (后端)
-│   ├── api/
-│   │   ├── auth/          # 认证 API
-│   │   ├── commitments/   # 约定管理 API
-│   │   ├── meetings/      # 见面记录 API
-│   │   ├── photos/        # 照片上传 API
-│   │   └── statistics/    # 统计数据 API
-│   ├── _middleware.ts     # JWT 中间件
-│   └── schema.sql         # 数据库 Schema
-│
-├── frontend/               # Vue 3 前端
-│   └── src/
-│       ├── layouts/       # 布局组件
-│       ├── pages/         # 页面组件
-│       ├── stores/        # Pinia stores
-│       └── router/        # 路由配置
-│
-└── package.json
-```
-
-## 本地开发
-
-```bash
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm run dev
-
-# 构建
-npm run build
-
-# 本地预览
-npm run preview
 ```
 
 ## 费用
 
 Cloudflare 免费额度完全够用：
-
-- ✅ Pages: 无限次构建
-- ✅ Functions: 每日 10 万次请求
-- ✅ D1: 500 万次读取/月
-- ✅ R2: 10GB 存储 + 10GB 读取/月
-- ✅ KV: 10 万次读取/天
-
-## 常见问题
-
-### Q: 登录失败 (401)？
-
-**A:** 检查 D1 数据库是否已初始化：
-```bash
-wrangler d1 execute couple-commitment-db --file=functions/schema.sql
-```
-
-### Q: 照片上传失败？
-
-**A:** 检查 R2 存储桶是否正确绑定
-
-### Q: 如何重新部署？
-
-**A:** 推送代码自动部署，或手动执行：
-```bash
-wrangler pages deploy frontend/dist
-```
+- Pages: 无限次构建
+- D1: 500 万次读取/月
+- R2: 10GB 存储
+- KV: 10 万次读取/天
 
 ## 支持
 
-- 📖 [Cloudflare Pages 文档](https://developers.cloudflare.com/pages/)
 - 📖 [详细部署指南](./DEPLOY.md)
-- 📖 [项目总结](./PROJECT_SUMMARY.md)
-
-## 开发日志
-
-- 2026-05-01: 项目创建并部署
+- 📖 [Cloudflare 文档](https://developers.cloudflare.com/pages/)
 
 ## License
 
