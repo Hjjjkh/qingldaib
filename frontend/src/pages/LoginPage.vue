@@ -1,7 +1,7 @@
 <template>
   <div class="login-page">
     <n-card class="login-card" title="💕 欢迎回来">
-      <n-form ref="formRef" :model="formData" :rules="rules">
+      <n-form :model="formData" :rules="rules">
         <n-form-item label="密码" path="password">
           <n-input
             v-model:value="formData.password"
@@ -31,7 +31,6 @@ const router = useRouter();
 const message = useMessage();
 const authStore = useAuthStore();
 
-const formRef = ref(null);
 const loading = ref(false);
 const formData = reactive({
   password: '',

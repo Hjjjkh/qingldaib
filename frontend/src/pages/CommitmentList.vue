@@ -28,14 +28,13 @@
 
 <script setup lang="ts">
 import { ref, h, computed } from 'vue';
-import { NTag, NButton, NAvatar } from 'naive-ui';
+import { NTag, NButton } from 'naive-ui';
 import { useRouter } from 'vue-router';
-import { useCommitmentStore, Commitment } from '../stores/commitment';
-import { useMessage, useDialog } from 'naive-ui';
+import { useCommitmentStore, type Commitment } from '../stores/commitment';
+import { useMessage } from 'naive-ui';
 
 const router = useRouter();
 const message = useMessage();
-const dialog = useDialog();
 const store = useCommitmentStore();
 
 const filterStatus = ref<string | null>(null);

@@ -15,8 +15,8 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = response.data.user;
       localStorage.setItem('token', token.value);
       
-      // 设置 axios 默认 header
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
+    // 设置 axios 默认 header
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token.value!}`;
     } catch (error) {
       throw new Error('登录失败，请检查密码');
     }

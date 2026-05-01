@@ -1,15 +1,17 @@
 <template>
-  <n-config-provider :theme="theme">
+  <n-config-provider :theme="lightThemeOverrides">
     <router-view />
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { NConfigProvider } from 'naive-ui';
-import { GlobalTheme } from 'naive-ui';
+import { NConfigProvider, lightTheme } from 'naive-ui';
+import type { GlobalTheme } from 'naive-ui';
 
-const theme: GlobalTheme = {
+const lightThemeOverrides: GlobalTheme = {
+  ...lightTheme,
   common: {
+    ...lightTheme.common,
     primaryColor: '#ff6b99',
     primaryColorHover: '#ff8fb3',
     primaryColorPressed: '#ff4d80',
