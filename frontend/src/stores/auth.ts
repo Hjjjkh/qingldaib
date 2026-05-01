@@ -8,15 +8,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!token.value);
 
-  const login = async (password: string) => {
+    const login = async (password: string) => {
     try {
       const response = await axios.post('/api/auth/login', { password });
-      token.value = response.data.token;
+      const newToken = response.data.token;
+      token.value = newToken;
       user.value = response.data.user;
-      localStorage.setItem('token', token.value);
+      localStorage.setItem('token', newToken);
       
-    // 设置 axios 默认 header
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token.value!}`;
+      // 设置 axios 默认 header
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
     } catch (error) {
       throw new Error('登录失败，请检查密码');
     }
