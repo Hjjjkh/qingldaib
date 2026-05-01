@@ -1,19 +1,21 @@
 name = "couple-commitment"
 compatibility_date = "2024-01-01"
 
-[site]
-bucket = "./frontend/dist"
+# Pages build output directory
+pages_build_output_dir = "./frontend/dist"
 
-# D1 Database
+# D1 Database - 存储用户、约定、打卡、会议数据
 [[d1_databases]]
 binding = "DB"
 database_name = "couple-commitment-db"
+database_id = ""
 
-# KV Namespace
+# KV Namespace - 存储登录会话
 [[kv_namespaces]]
 binding = "SESSION_STORE"
+id = ""
 
-# R2 Bucket
+# R2 Bucket - 存储照片
 [[r2_buckets]]
 binding = "PHOTOS"
 bucket_name = "couple-photos"
