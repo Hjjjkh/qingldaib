@@ -1,9 +1,24 @@
-# Cloudflare Pages 配置
-# 注意：这是一个 Cloudflare Pages 项目，不是 Workers 项目
-# 构建和部署由 Cloudflare Pages 自动处理
-# 
-# D1/KV/R2 绑定在 Cloudflare Dashboard 配置：
-# Settings → Functions → Function bindings
-#
-# 环境变量在 Cloudflare Dashboard 配置：
-# Settings → Environment variables
+name = "couple-commitment-tracker"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "./frontend/dist"
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "couple-commitment-db"
+database_id = ""  # 自动创建时留空
+
+# KV Namespace
+[[kv_namespaces]]
+binding = "SESSION_STORE"
+id = ""  # 自动创建时留空
+preview_id = ""
+
+# R2 Bucket
+[[r2_buckets]]
+binding = "PHOTOS"
+bucket_name = "couple-photos"
+
+# Environment Variables
+[vars]
+JWT_SECRET = "couple-app-default-secret-change-me"
