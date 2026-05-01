@@ -1,26 +1,26 @@
 # Cloudflare Pages Configuration
-# https://developers.cloudflare.com/pages/platform/functions/
+# 
+# Build Configuration:
+# - Build command: npm run build
+# - Build output directory: frontend/dist
+#
+# Resources are configured via Dashboard:
+# Settings → Bindings
+#   - D1 Database: DB → couple-commitment-db
+#   - KV Namespace: SESSION_STORE → couple-commitment-tracker
+#   - R2 Bucket: PHOTOS → couple-photos
+#
+# Environment Variables:
+# Settings → Environment variables
+#   - JWT_SECRET: configured via Deploy Button
 
-name = "couple-commitment-tracker"
+name = "couple-commitment"
 compatibility_date = "2024-01-01"
-
-# Pages build output directory
 pages_build_output_dir = "./frontend/dist"
 
-# D1 Database binding
-[[d1_databases]]
-binding = "DB"
-database_name = "couple-commitment-db"
+# Resources are bound via Dashboard, not wrangler.toml
+# Do not add d1_databases, kv_namespaces, or r2_buckets sections
 
-# KV Namespace binding
-[[kv_namespaces]]
-binding = "SESSION_STORE"
-
-# R2 Bucket binding
-[[r2_buckets]]
-binding = "PHOTOS"
-bucket_name = "couple-photos"
-
-# Environment variables
+# Environment variable (can also be set in Dashboard)
 [vars]
-JWT_SECRET = "couple-app-default-secret-change-in-dashboard"
+JWT_SECRET = "default-secret-change-me"
