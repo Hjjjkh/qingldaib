@@ -9,9 +9,7 @@
   "scripts": {
     "dev": "npm run dev --workspace=frontend",
     "build": "npm run build --workspace=frontend",
-    "preview": "wrangler pages dev frontend/dist",
-    "db:init": "wrangler d1 execute couple-commitment-db --file=functions/schema.sql",
-    "db:create": "wrangler d1 create couple-commitment-db"
+    "preview": "wrangler pages dev frontend/dist"
   },
   "devDependencies": {
     "wrangler": "^3.0.0"
